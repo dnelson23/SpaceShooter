@@ -7,7 +7,7 @@ namespace Assets.Scripts.Components
      * Simple 2D vector movement script.
      */
 
-    public class Movement : CustomComponentBase
+    public class VectorMovement2D : CustomComponentBase
     {
         public Vector3 moveVector { get; private set; }
 

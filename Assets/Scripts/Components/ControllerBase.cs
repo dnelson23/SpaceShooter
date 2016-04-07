@@ -6,7 +6,7 @@ namespace Assets.Scripts.Components
      * Base Controller class for creating object controllers
      */
 
-    public abstract class ControllerBase<T> : CustomComponentBase
+    public abstract class ControllerBase : CustomComponentBase
     {
         protected override void Awake()
         {

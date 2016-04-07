@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using PowerupTypes = Assets.Scripts.PowerUps.Powerup.Types;
 
 namespace Assets.Scripts.Character
 {
     class ShipController : Components.ControllerBase
     {
+        #region Singleton
+        /*
+         * This section creates allows for the singleton pattern to be used by this object.
+         * Any other script can retrieve a reference to the player ShipController by calling ShipController.Instance
+         */
         private static ShipController _instance;
         public static ShipController Instance
         {
@@ -19,6 +25,7 @@ namespace Assets.Scripts.Character
                 return _instance;
             }
         }
+        #endregion
 
         // custom component declarations
         // ShipState does not need to be added as a component, so we just create a new object for it
@@ -28,27 +35,36 @@ namespace Assets.Scripts.Character
             get { return _state.currentState; }
             set { _state.ChangeState(value); }
         }
-        Components.Movement _movement;
+
+        // movement
+        Components.RigidBodyMovement2D _movement;
+        float acceleration = 15f;
+        float maxSpeed = 25f;
+        float rotateSpeed = 2.5f;
+
+        // weapon
         Components.Weapon _weapon;
+        float fireRate = 1f;
+        float lastFired = 0f;
+
+        // health
         Components.HitPoints _health;
         public float CurrentHealth
         {
             get { return _health.curHitPoints; }
         }
-
-        // standard variables
-        public Components.Bullet BulletPrefab;
-        public float lives = 3f;
-        float fireRate = 1f;
-        float lastFired = 0f;
-        float maxSpeed = 0.06f;
-        float rotateSpeed = 3f;
         float hitPoints = 100f;
+
+        // Powerups
+        List<PowerupTypes> currentPowerups = new List<PowerupTypes>();
+
+        // standard properties
+        public float lives = 3f;
 
         protected override void Awake()
         {
             // add custom components to gameobject
-            _movement = gameObject.AddComponent<Components.Movement>();
+            _movement = gameObject.AddComponent<Components.RigidBodyMovement2D>();
             _health = gameObject.AddComponent<Components.HitPoints>();
             _weapon = gameObject.AddComponent<Components.Weapon>();
         }
@@ -57,7 +73,6 @@ namespace Assets.Scripts.Character
         {
             // set special component variables
             _health.SetHitPoints(hitPoints);
-            _weapon.SetBulletPrefab(BulletPrefab);
         }
 
         void Update()
@@ -71,7 +86,7 @@ namespace Assets.Scripts.Character
 
             float hor = 0f, vert = 0f;
             GetMovementInput(ref hor, ref vert);
-            Vector3 newMoveVect = (transform.forward * vert) * maxSpeed;
+            Vector3 newMoveVect = transform.forward * vert;
 
             _movement.SetMoveVector(newMoveVect);
             _movement.Rotate(transform.right * hor, rotateSpeed);
@@ -87,8 +102,7 @@ namespace Assets.Scripts.Character
 
         bool IsFiring()
         {
-            if (Input.GetKey(KeyCode.Space)) { return true; }
-            return false;
+            return Input.GetKey(KeyCode.Space) ? true : false;
         }
     }
 }
