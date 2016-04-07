@@ -5,7 +5,7 @@ namespace Assets.Scripts.PowerUps
 {
     [RequireComponent(typeof(SphereCollider))]
     [RequireComponent(typeof(MeshRenderer))]
-    public class Powerup : MonoBehaviour
+    public class Powerup
     {
         public enum Types { Blaster, Spread, Shield, Default }
 
@@ -13,11 +13,14 @@ namespace Assets.Scripts.PowerUps
 
         protected Color _color = Color.white;
 
-        public static Powerup GetRandomPowerup()
+        public static Types GetRandomPowerupType()
         {
-            string typeName = ((Types)UnityEngine.Random.Range(1, 3)).ToString();
+            return (Types)UnityEngine.Random.Range(1, 3);
+        }
 
-            var type = Type.GetType(typeName);
+        public static Powerup InitPowerupByType(Types newPowerup)
+        {
+            var type = Type.GetType(newPowerup.ToString());
             var pUpType = Type.GetType(type.ToString());
             return (Powerup)Activator.CreateInstance(pUpType);
         }

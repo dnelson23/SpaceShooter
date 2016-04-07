@@ -14,5 +14,8 @@ namespace Assets.Scripts.PowerUps
         }
 
         private Color _color = Color.blue;
+
+        float maxShieldHealth = 100f;
+        float curShieldHealth;
     }
 }
