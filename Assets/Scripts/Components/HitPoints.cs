@@ -5,7 +5,15 @@
         public float curHitPoints { get; private set; }
         float maxHitPoints;
 
-        public void SetHitPoints(float maxHP)
+        public HitPoints()
+        { }
+
+        public HitPoints(float maxHP)
+        {
+            maxHitPoints = maxHP;
+        }
+
+        public void SetMaxHitPoints(float maxHP)
         {
             curHitPoints = maxHitPoints = maxHP;
         }

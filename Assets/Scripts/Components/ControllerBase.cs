@@ -16,8 +16,8 @@ namespace Assets.Scripts.Components
 
         void InitializeCustomComponents()
         {
-            Components.CustomComponentBase[] components = GetComponents<Components.CustomComponentBase>();
-            foreach (Components.CustomComponentBase component in components)
+            CustomComponentBase[] components = GetComponents<CustomComponentBase>();
+            foreach (CustomComponentBase component in components)
             {
                 component.Load(_parent.gameObject);
             }

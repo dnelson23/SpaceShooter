@@ -37,10 +37,10 @@ namespace Assets.Scripts.Character
         }
 
         // movement
-        Components.RigidBodyMovement2D _movement;
-        float acceleration = 15f;
-        float maxSpeed = 25f;
-        float rotateSpeed = 2.5f;
+        Components.RigidbodyMovement2D _movement;
+        public float acceleration = 15f;
+        public float maxSpeed = 25f;
+        public float rotateSpeed = 2.5f;
 
         // weapon
         Components.Weapon _weapon;
@@ -64,7 +64,7 @@ namespace Assets.Scripts.Character
         protected override void Awake()
         {
             // add custom components to gameobject
-            _movement = gameObject.AddComponent<Components.RigidBodyMovement2D>();
+            _movement = gameObject.AddComponent<Components.RigidbodyMovement2D>();
             _health = gameObject.AddComponent<Components.HitPoints>();
             _weapon = gameObject.AddComponent<Components.Weapon>();
         }
@@ -72,7 +72,9 @@ namespace Assets.Scripts.Character
         void Start()
         {
             // set special component variables
-            _health.SetHitPoints(hitPoints);
+            _health.SetMaxHitPoints(hitPoints);
+            _movement.acceleration = acceleration;
+            _movement.maxSpeed = maxSpeed;
         }
 
         void Update()

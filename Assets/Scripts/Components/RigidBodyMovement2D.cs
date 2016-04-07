@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Assets.Scripts.Components
 {
     [RequireComponent(typeof(Rigidbody))]
-    class RigidBodyMovement2D : CustomComponentBase
+    class RigidbodyMovement2D : CustomComponentBase
     {
         public Vector3 moveVector { get; set; }
 
