@@ -7,6 +7,7 @@ namespace Assets.Scripts.Components
         Vector3 moveVector = Vector3.zero;
         public float damage = 100f;
         public float speed = 1f;
+        public bool hasTTL = false;
         public float maxTimeAlive = 5f;
         float timeCounter = 0f;
 
@@ -18,11 +19,11 @@ namespace Assets.Scripts.Components
         void Update()
         {
             _parent.position = _parent.position + moveVector;
-            if(timeCounter >= maxTimeAlive)
+
+            if (hasTTL)
             {
-                Destroy(gameObject);
+                CheckTimeToLive();
             }
-            timeCounter += Time.deltaTime;
         }
 
         void OnCollisionEnter(Collision col)
@@ -35,6 +36,15 @@ namespace Assets.Scripts.Components
                 collidedHealth.TakeDamage(damage);
                 Destroy(gameObject);
             }
+        }
+
+        void CheckTimeToLive()
+        {
+            if (timeCounter >= maxTimeAlive)
+            {
+                Destroy(gameObject);
+            }
+            timeCounter += Time.deltaTime;
         }
     }
 }

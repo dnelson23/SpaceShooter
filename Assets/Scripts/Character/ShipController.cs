@@ -46,6 +46,7 @@ namespace Assets.Scripts.Character
         Components.Weapon _weapon;
         float fireRate = 1f;
         float lastFired = 0f;
+        Dictionary<string, GameObject> bullets = new Dictionary<string, GameObject>();
 
         // health
         Components.HitPoints _health;
@@ -67,6 +68,15 @@ namespace Assets.Scripts.Character
             _movement = gameObject.AddComponent<Components.RigidbodyMovement2D>();
             _health = gameObject.AddComponent<Components.HitPoints>();
             _weapon = gameObject.AddComponent<Components.Weapon>();
+
+            // Load bullet prefabs for powerups
+            GameObject blaster = Resources.Load<GameObject>("Prefabs/Bullets/Single");
+            if(blaster == null) { Debug.Log("Blaster prefab did not load"); }
+            else { bullets.Add("Blaster", blaster); }
+
+            GameObject spread = Resources.Load<GameObject>("Prefabs/Bullets/Double");
+            if(spread == null) { Debug.Log("Spread prefab did not load"); }
+            else { bullets.Add("Spread", spread); }
         }
 
         void Start()
@@ -75,6 +85,8 @@ namespace Assets.Scripts.Character
             _health.SetMaxHitPoints(hitPoints);
             _movement.acceleration = acceleration;
             _movement.maxSpeed = maxSpeed;
+
+            _weapon.SetBullet(bullets["Blaster"]);
         }
 
         void Update()
