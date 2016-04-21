@@ -14,6 +14,11 @@ namespace Assets.Scripts.Components
             InitializeCustomComponents();
         }
 
+        public virtual void Destroy()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
         void InitializeCustomComponents()
         {
             CustomComponentBase[] components = GetComponents<CustomComponentBase>();

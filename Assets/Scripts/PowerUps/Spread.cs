@@ -1,18 +1,15 @@
-﻿#pragma warning disable 0108 // hiding inherited member properties
-
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Assets.Scripts.PowerUps
 {
     class Spread : Powerup
     {
-        private Types _type = Types.Spread;
-        public Types Type
+        void Awake()
         {
-            get { return _type; }
+            _type = Types.Spread;
+            augmentComponent = "Weapon";
+            tier = 2;
         }
-
-        private Color _color = Color.red;
     }
 }

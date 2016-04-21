@@ -12,7 +12,7 @@ namespace Assets.Scripts.Components
         public float acceleration = 10f;
         public float maxSpeed = 20f;
 
-        Rigidbody rBody;
+        public Rigidbody rBody;
         float rigidbodyDrag = 1.5f;
 
         void FixedUpdate()

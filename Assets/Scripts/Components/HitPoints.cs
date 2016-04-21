@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Components
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Components
 {
     class HitPoints : CustomComponentBase
     {
@@ -21,6 +23,10 @@
         public void TakeDamage(float amount)
         {
             curHitPoints -= amount;
+            if(curHitPoints <= 0f)
+            {
+                _parent.GetComponent<ControllerBase>().Destroy();
+            }
         }
 
         public void Heal(float amount)

@@ -7,12 +7,11 @@ namespace Assets.Scripts.PowerUps
 {
     class Blaster : Powerup
     {
-        private Types _type = Types.Blaster;
-        public Types Type
+        void Awake()
         {
-            get { return _type; }
+            _type = Types.Blaster;
+            augmentComponent = "Weapon";
+            tier = 1;
         }
-
-        private Color _color = Color.green;
     }
 }

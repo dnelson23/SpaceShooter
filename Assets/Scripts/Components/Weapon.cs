@@ -8,8 +8,27 @@ namespace Assets.Scripts.Components
         
         public void Fire()
         {
-            GameObject newBullet = Instantiate(BulletPrefab, _parent.position, _parent.rotation) as GameObject;
-            newBullet.GetComponent<Bullet>().SetMoveVector(_parent.forward);
+            if(BulletPrefab == null)
+            {
+                Debug.LogWarning("Weapon has no bullet object");
+                return;
+            }
+
+            GameObject newBullet = Instantiate(BulletPrefab, transform.position, transform.rotation) as GameObject;
+            newBullet.transform.rotation = Quaternion.Euler(90f, newBullet.transform.eulerAngles.y, newBullet.transform.eulerAngles.z);
+            Bullet bul = newBullet.GetComponent<Bullet>();
+            if(bul != null)
+            {
+                bul.SetMoveVector(transform.forward);
+            }
+            else
+            {
+                Bullet[] bullets = newBullet.GetComponentsInChildren<Bullet>();
+                foreach(Bullet bullet in bullets)
+                {
+                    bullet.SetMoveVector(transform.forward);
+                }
+            }
         }
 
         public void SetBullet(GameObject newBullet)

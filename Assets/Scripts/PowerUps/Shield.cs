@@ -7,15 +7,11 @@ namespace Assets.Scripts.PowerUps
 {
     class Shield : Powerup
     {
-        private Types _type = Types.Shield;
-        public Types Type
+        void Awake()
         {
-            get { return _type; }
+            augmentComponent = "Health";
+            tier = 1;
+            shieldHealth = 100f;
         }
-
-        private Color _color = Color.blue;
-
-        float maxShieldHealth = 100f;
-        float curShieldHealth;
     }
 }

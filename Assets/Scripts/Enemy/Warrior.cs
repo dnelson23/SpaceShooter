@@ -1,14 +1,16 @@
 ﻿using System;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Assets.Scripts.Enemy
 {
-    class AttackCopter : EnemyBase
+    class Warrior : EnemyBase
     {
         void Start()
         {
             acceleration = 15f;
-            damage = 100f;
+            damage = 50f;
         }
     }
 }

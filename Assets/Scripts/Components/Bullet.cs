@@ -28,7 +28,6 @@ namespace Assets.Scripts.Components
 
         void OnCollisionEnter(Collision col)
         {
-            Debug.Log("collided");
             HitPoints collidedHealth = col.gameObject.GetComponent<HitPoints>();
 
             if (collidedHealth)

@@ -9,10 +9,10 @@ namespace Assets.Scripts.Character
     {
         #region Singleton
         /*
-         * This section creates allows for the singleton pattern to be used by this object.
+         * This section allows for the singleton pattern to be used by this object.
          * Any other script can retrieve a reference to the player ShipController by calling ShipController.Instance
          */
-        private static ShipController _instance;
+        private static ShipController _instance = null;
         public static ShipController Instance
         {
             get
@@ -44,7 +44,11 @@ namespace Assets.Scripts.Character
 
         // weapon
         Components.Weapon _weapon;
-        float fireRate = 1f;
+        PowerupTypes curPowerupType
+        {
+            get { return curPowerups["Weapon"] == null ? curPowerups["Weapon"].Type : PowerupTypes.Default; }
+        }
+        public float fireRate = 1f;
         float lastFired = 0f;
         Dictionary<string, GameObject> bullets = new Dictionary<string, GameObject>();
 
@@ -57,7 +61,7 @@ namespace Assets.Scripts.Character
         float hitPoints = 100f;
 
         // Powerups
-        List<PowerupTypes> currentPowerups = new List<PowerupTypes>();
+        Dictionary<string, PowerUps.Powerup> curPowerups = new Dictionary<string, PowerUps.Powerup>();
 
         // standard properties
         public float lives = 3f;
@@ -86,6 +90,11 @@ namespace Assets.Scripts.Character
             _movement.acceleration = acceleration;
             _movement.maxSpeed = maxSpeed;
 
+            // Set rigidbody constraints
+            RigidbodyConstraints constraints = RigidbodyConstraints.FreezeRotation |
+                                               RigidbodyConstraints.FreezePositionY;
+            _movement.rBody.constraints = constraints;
+
             _weapon.SetBullet(bullets["Blaster"]);
         }
 
@@ -105,6 +114,16 @@ namespace Assets.Scripts.Character
             _movement.SetMoveVector(newMoveVect);
             _movement.Rotate(transform.right * hor, rotateSpeed);
         }
+
+        void OnTriggerEnter(Collider col)
+        {
+            if(col.gameObject.tag == "powerup")
+            {
+                PowerUps.Powerup pUp = col.gameObject.GetComponent<PowerUps.Powerup>();
+                AddPowerup(pUp);
+                GameObject.Destroy(col.gameObject);
+            }
+        }
         
         void GetMovementInput(ref float hor, ref float vert)
         {
@@ -117,6 +136,33 @@ namespace Assets.Scripts.Character
         bool IsFiring()
         {
             return Input.GetKey(KeyCode.Space) ? true : false;
+        }
+
+        void AddPowerup(PowerUps.Powerup powerup)
+        {
+
+            if (curPowerups.ContainsKey(powerup.augmentComponent))
+            {
+                curPowerups[powerup.augmentComponent] = powerup;
+            }
+            else
+            {
+                curPowerups.Add(powerup.augmentComponent, powerup);
+            }
+
+            if (powerup.augmentComponent == "Weapon")
+            {
+                _weapon.SetBullet(bullets[powerup.Type.ToString()]);
+            }
+            else
+            {
+                _health.Heal(powerup.shieldHealth);
+            }
+        }
+
+        public override void Destroy()
+        {
+            Level.SceneManager.Instance.RestartGame();
         }
     }
 }
